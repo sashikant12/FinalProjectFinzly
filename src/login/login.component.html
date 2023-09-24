@@ -1,0 +1,13 @@
+<div class="Login">
+  <h2>Login Page</h2>
+  <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <label id="UserId" for="Cid" >User ID</label>
+    <input type="text" placeholder="User ID" name="Cid" [(ngModel)]="Cid" required>
+    <button type="button" (click)="generateOTP()">Generate OTP</button><br><br>
+    <div class="OTP" *ngIf="showOTPInput">
+      <label for="OTP">OTP</label>
+      <input type="text" placeholder="OTP" name="OTP" [(ngModel)]="OTP" required >
+    </div>
+    <button type="submit" *ngIf="showOTPInput">Submit</button>
+  </form>
+</div>

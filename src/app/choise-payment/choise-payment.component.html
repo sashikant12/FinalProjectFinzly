@@ -1,0 +1,44 @@
+<app-header></app-header>
+<p>Payment Options!</p>
+<h2>Paid Bills for User ID: {{userId}}</h2>
+<h2>Paid Bills for Bill ID: {{selectedBillId}}</h2>
+<ul>
+    <table class="table table-striped">
+      <thead>
+          <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Phone Number</th>
+              <th>Rate</th>
+              <th>Discount</th>
+              <th>Discount on Time</th>
+              <th>Payment Mode</th>
+              <th>Amount</th>
+              <th>Total Amount</th>
+              <th>Payment Mode</th>
+              <th>Pay</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let cust of Invoice">
+              <td>{{cust.billId}}</td>
+              <td>{{cust.customer.name}}</td>
+              <td>{{cust.customer.phoneNumber}}</td>
+              <td>{{cust.paymentMode.rate}}</td>
+              <td>{{cust.paymentMode.discountPercentage}}</td>
+              <td>{{cust.paymentMode.dateDiscount}}</td>
+              <td>{{cust.paymentMode.paymentModeName}}</td>
+              <td>{{cust.amount}}</td>
+              <td>{{cust.totalAmount}}</td>
+              <td>
+                <select id="paymentMethod" [(ngModel)]="selectedPaymentMethod">
+                    <option value="wallet">Wallet</option>
+                    <option value="online">Online</option>
+                  </select>                  
+              </td>
+              <td><button (click)="navigateToInvoice()">Pay</button></td>
+          </tr>
+      </tbody>
+    </table>
+  </ul>
+

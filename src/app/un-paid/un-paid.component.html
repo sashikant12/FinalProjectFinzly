@@ -1,0 +1,41 @@
+<app-header></app-header>
+<p>un-paid works!</p>
+<div>
+    <!-- <h2>Paid Bills for User ID: {{userId}}</h2> -->
+    <ul>
+      <table class="table table-striped" name ="bills">
+        <thead>
+            <tr>
+                <th >ID</th>
+                <th>Name</th>
+                <th>Customer Id</th>
+                <th>Phone Number</th>
+                <th>Rate</th>
+                <th>Discount</th>
+                <th>Discount on Time</th>
+                <th>Payment Mode</th>
+                <th>Amount</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>button</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let cust of unPaidBills">
+                <td >{{cust.billId}}</td>
+                <td>{{cust.customer.name}}</td>
+                <td>{{cust.customer.customerId}}</td>
+                <td>{{cust.customer.phoneNumber}}</td>
+                <td>{{cust.paymentMode.rate}}</td>
+                <td>{{cust.paymentMode.discountPercentage}}</td>
+                <td>{{cust.paymentMode.dateDiscount}}</td>
+                <td>{{cust.paymentMode.paymentModeName}}</td>
+                <td>{{cust.amount}}</td>
+                <td>{{cust.totalAmount}}</td>
+                <td>{{cust.status}}</td>
+                <button (click)="navigateToChoicePayment(cust.billId)">Pay Now</button>
+            </tr>
+        </tbody>
+      </table>
+    </ul>
+  </div>

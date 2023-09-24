@@ -1,0 +1,78 @@
+/* Center the login form */
+/* Style the login container with a gradient background */
+.Login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(to right, #0f0c29, #302b63, #24243e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+ /* Gradient background */
+  color: #fff; /* Text color for better contrast */
+  margin: 0;
+  padding: 0;
+}
+
+#UserId {
+  color: #fff; /* Black color */
+}
+
+/* Style the form container */
+form {
+  background-color: rgba(0, 0, 0, 0.7);;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  width: 330px; /* Adjust to your needs */
+  text-align: center;
+}
+
+/* Style the form heading */
+h2 {
+  color: #fff; /* Dark color for the heading */
+  font-size: 24px;
+  margin-bottom: 20px;
+
+}
+
+/* Style labels for input fields */
+label {
+  font-weight: bold;
+  margin-top: 10px;
+  display: block;
+}
+
+/* Style text input fields */
+input[type="text"] {
+  width: 90%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Style buttons */
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+div *ngIf{
+  display: block;
+}
+
+
+body {
+  
+  margin: 0px;
+  
+}

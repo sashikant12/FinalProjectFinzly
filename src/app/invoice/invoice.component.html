@@ -1,0 +1,75 @@
+<app-header></app-header>
+<p>invoice works!</p>
+<!-- <h2>Paid Bills for User ID: {{userId}} </h2>  
+<h2>Paid Bills for User ID: {{selectedBillId}}</h2>
+<h2>Payment mode id:{{paymnetMethod}} </h2> -->
+InvoiceComponent
+<!-- <ul>
+    <table class="table table-striped">
+      <thead>
+          <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Phone Number</th>
+              <th>Rate</th>
+              <th>Discount</th>
+              <th>Discount on Time</th>
+              <th>Payment Mode</th>
+              <th>Amount</th>
+              <th>Total Amount</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let cust of Generate">
+              <td>{{cust.billId}}</td>
+              <td>{{cust.customer.name}}</td>
+              <td>{{cust.customer.phoneNumber}}</td>
+              <td>{{cust.paymentMode.rate}}</td>
+              <td>{{cust.paymentMode.discountPercentage}}</td>
+              <td>{{cust.paymentMode.dateDiscount}}</td>
+              <td>{{cust.paymentMode.paymentModeName}}</td>
+              <td>{{cust.amount}}</td>
+              <td>{{cust.totalAmount}}</td>
+          </tr>
+      </tbody>
+    </table>
+  </ul> -->
+
+<div class="invoice">
+    <div class="header">
+      <h1>Invoice</h1>
+      <!-- <p>Date: {{ currentDate }}</p> -->
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Rate</th>
+          <th>Unit</th>
+          <th>Discount</th>
+          <th>Total</th>
+          <th>Total Amount Paid</th>
+          <th>button</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cust of invoiceItems">
+          <td>{{ cust.billId }}</td>
+          <td>{{cust.customer.name}}</td>
+          <td>{{cust.paymentMode.rate}}</td>
+          <td>{{cust.consumedUnit}}</td>
+          <td>{{cust.paymentMode.dateDiscount}}</td>
+          <td>{{cust.amount}}</td>
+          <td>{{cust.totalAmount}}</td>
+          <td><button class="pay-button" (click)="navigateToConformPayment()">Pay</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+     <!-- <p>Total Amount: {{cust.totalAmount}}</p> -->
+     <!-- <button class="pay-button" (click)="navigateToConformPayment()">Pay</button> -->
+    </div>
+  </div>
+  
+        

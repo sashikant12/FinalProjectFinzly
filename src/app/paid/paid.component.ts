@@ -27,9 +27,7 @@ export class PaidComponent implements OnInit {
 loadPaidBills(userId:any) {
   this.customerService.loadPaidBills(this.userId).subscribe((response) => {
     console.log(response); 
-    this.paidBills=response;
-    // Store the fetched paid bills data
-    // console.log("tha par hu mai");  
+    this.paidBills=response; 
   });
 }
 }

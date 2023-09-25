@@ -2,4 +2,83 @@
     display: inline; /* or display: inline-block; */
     /* Add additional styling as needed */
   }
+/* Style the entire page */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the app-header component (adjust the selector as needed) */
+app-header {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Style the main heading */
+h2 {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 24px;
+}
+
+/* Style the invoice container */
+.invoice {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+/* Style the header within the invoice container */
+.invoice .header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Style the table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Style the table header */
+.table th {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  text-align: left;
+  padding: 10px;
+}
+
+/* Style the table rows */
+.table td {
+  padding: 10px;
+}
+
+/* Style the table row on hover */
+.table tbody tr:hover {
+  background-color: #f2f2f2;
+}
+
+/* Style the pay button */
+.pay-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pay-button:hover {
+  background-color: #0056b3;
+}
+
+/* Optional: Add more custom styles as needed */
   

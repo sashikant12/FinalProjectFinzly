@@ -36,8 +36,6 @@ export class UnPaidComponent implements OnInit {
       sessionStorage.setItem('selectedBillId', ""+ this.notinuse);
       // Store the fetched paid bills data
       console.log(this.SelectedBill);
-      // console.log(this.notinuse);
-      // console.log("tha par hu mai edhar par lore"); 
     });
 
     

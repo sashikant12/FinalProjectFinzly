@@ -11,7 +11,13 @@ export class ConformPaymentComponent implements OnInit {
   userId:any=sessionStorage.getItem("customerId");
   selectedBillId:any=sessionStorage.getItem("billId");
   paymnetMethod:any=sessionStorage.getItem("paymentModeId");
-
+  Cid: number | undefined;
+  OTP: number| undefined;
+  min = 100000;
+  max = 999999;
+  randomInteger = Math.floor(Math.random() * (this.max - this.min + 1)) + this.min;
+  showOTPInput: boolean=false;
+  isOTPValid: boolean = false;
   constructor(private customerService : CustomerService,private router:Router) { }
 
   showCreditCard = false;
@@ -34,12 +40,13 @@ export class ConformPaymentComponent implements OnInit {
         // Perform payment processing logic here
         // This is where you can send payment details to a server or perform any other actions
         console.log('Payment processed successfully');
+        this.router.navigate(['./Home/:{this.Cid}']);
       } else {
         console.log('Please fill in all fields before making a payment');
       }
     }
   GoBackToHome(){
-    this.router.navigate(['./Home/:{this.Cid}']);
+    
   }
   ngOnInit(): void {
     this.ConformPayment(this.userId,this.selectedBillId);
@@ -50,7 +57,7 @@ export class ConformPaymentComponent implements OnInit {
   ConformPayment(userId:any,SelectedBill:any) {
     this.customerService.ConformPayment(this.userId,this.selectedBillId).subscribe((response:any) => {
       console.log(response); 
-      // console.log("tha par hu mai dhek le na");  
+      
     });
 }
 

@@ -37,11 +37,6 @@ export class ChoisePaymentComponent implements OnInit {
       return;
     }
   
-    // You can now use the paymentValue as needed.
-    // For example, you can send it to your backend for processing.
-  
-
-  
     this.router.navigate(['Invoice']);
   }
   ngOnInit(): void {
@@ -51,10 +46,8 @@ export class ChoisePaymentComponent implements OnInit {
     this.customerService.InvoiceComponent(this.userId,this.selectedBillId).subscribe((response:any) => {
       console.log(response);
       console.log(this.selectedPaymentMethod);
-      // console.log("qwertyuio")
       console.log(this.pay); 
-      this.Invoice=response;
-      // console.log("tha par hu mai dhek le na");  
+      this.Invoice=response; 
     });
 }
 }

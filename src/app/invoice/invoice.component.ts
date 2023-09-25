@@ -29,16 +29,14 @@ export class InvoiceComponent implements OnInit {
 
   InvoiceComponent(userId:any,SelectedBill:any,paymnetMethod:any) {
     this.customerService.PaymentMethodMode(this.userId,this.selectedBillId,this.paymnetMethod).subscribe((response:any) => {
-      console.log(response); 
-      // console.log("tha par hu mai dhek le na");  
+      console.log(response);  
     });
   }
     checkIdentity(userId:any,selectedBillId:any){
       this.customerService.InvoiceComponent(this.userId,this.selectedBillId).subscribe((response:any) => {
         console.log(response);
         this.Generate=response;
-        this.invoiceItems=response;
-        // console.log("tha par hu mai dhek le na thora niche");  
+        this.invoiceItems=response; 
     });
 
 }

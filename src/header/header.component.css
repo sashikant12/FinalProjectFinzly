@@ -1,0 +1,38 @@
+.navbar {
+    background-color: #fff; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .navbar-brand {
+    font-weight: bold; 
+  }
+  
+  
+  
+  .nav-item {
+    margin-right: 15px; /* Add some spacing between navbar items */
+  }
+  
+  .nav-link {
+    color: #333; /* Link text color */
+    font-weight: 500; /* Link text weight */
+    text-decoration: none !important; /* Remove underlines from links */
+  }
+  
+  .nav-link:hover {
+    color: #007bff; /* Link text color on hover */
+  }
+  
+  /* Style the select dropdown */
+  #bills {
+    width: 150px; /* Set the width of the dropdown */
+    margin: 0; /* Remove default margin */
+  }
+  
+  /* Style the logout link */
+  .nav-item:last-child .nav-link {
+    color: #dc3545; /* Logout link text color */
+  }
+  
+  /* Optional: Add more custom styles as needed */
+  

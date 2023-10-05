@@ -17,10 +17,7 @@ public class CustomerBillConroller {
 	@Autowired
 	CustomerBillServices customerBillServices;
 
-	@RequestMapping("memo")
-	public String minu() {
-		return "Olle Olle Olle";
-	}
+	
 
 	@GetMapping("getAlltranction")
 	public List<CustomerBill> getAlltranction() {

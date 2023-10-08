@@ -49,4 +49,9 @@ public class CustomerBillConroller {
 	public List<CustomerBill> getAlltranctionByIdForSucess(@PathVariable long id) {
 		return customerBillServices.getAlltranctionByIdForSucess(id);
 	}
+	
+	@GetMapping("getAlltranctionByIdForSucess/{id}")
+	public List<CustomerBill> AllgetAlltranctionByIdForSucess(@PathVariable long id) {
+		return customerBillServices.getAlltranctionByIdForSucess(id);
+	}
 }

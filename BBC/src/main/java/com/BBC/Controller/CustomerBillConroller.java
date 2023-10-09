@@ -17,38 +17,39 @@ public class CustomerBillConroller {
 	@Autowired
 	CustomerBillServices customerBillServices;
 
-	
-
-	@GetMapping("getAlltranction")
+	@GetMapping("tranctions")
 	public List<CustomerBill> getAlltranction() {
 		return customerBillServices.getAlltranction();
 	}
 
-	@GetMapping("getAlltranctionByIdForPending/{id}")
+//	@GetMapping("getAlltranctionByIdForPending/{id}")
+	@GetMapping("pending/{id}")
 	public List<CustomerBill> getAlltranctionByIdForPending(@PathVariable long id) {
 		return customerBillServices.getAlltranctionByIdForPending(id);
 	}
 
-	@GetMapping("setAlltranctionByIdAndPaymentId/{id}/{tId}/{pId}")
+//	@GetMapping("setAlltranctionByIdAndPaymentId/{id}/{tId}/{pId}")
+	@GetMapping("set/{id}/{tId}/{pId}")
 	public String setAlltranctionByIdAndPaymentId(@PathVariable long id, @PathVariable long tId,
 			@PathVariable long pId) {
 		return customerBillServices.setAlltranctionByIdAndPaymentId(id, tId, pId);
 	}
 
-	@GetMapping("getAlltranctionBillInvoice/{id}/{tId}")
+//	@GetMapping("getAlltranctionBillInvoice/{id}/{tId}")
+	@GetMapping("invoices/{id}/{tId}")
 	public List<CustomerBill> getAlltranctionBillInvoice(@PathVariable long id, @PathVariable long tId) {
 		return customerBillServices.getAlltranctionBillInvoice(id, tId);
 	}
-
-	@GetMapping("getAlltranctionPaymentStatusUpdate/{id}/{tId}")
+	
+//	@GetMapping("getAlltranctionPaymentStatusUpdate/{id}/{tId}")
+	@GetMapping("update/{id}/{tId}")
 	public String getAlltranctionPaymentUpdate(@PathVariable long id, @PathVariable long tId) {
 		return customerBillServices.getAlltranctionPaymentUpdate(id, tId);
 	}
-
-	@GetMapping("getAlltranctionByIdForSucess/{id}")
+	
+//	@GetMapping("getAlltranctionByIdForSucess/{id}")
+	@GetMapping("success/{id}")
 	public List<CustomerBill> getAlltranctionByIdForSucess(@PathVariable long id) {
 		return customerBillServices.getAlltranctionByIdForSucess(id);
 	}
-	
-	
 }

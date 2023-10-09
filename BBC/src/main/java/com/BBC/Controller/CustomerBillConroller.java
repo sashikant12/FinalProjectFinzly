@@ -25,6 +25,7 @@ public class CustomerBillConroller {
 //	@GetMapping("getAlltranctionByIdForPending/{id}")
 	@GetMapping("/pending/{id}")
 	public List<CustomerBill> getAlltranctionByIdForPending(@PathVariable long id) {
+		System.out.println("testtt");
 		return customerBillServices.getAlltranctionByIdForPending(id);
 	}
 

@@ -1,8 +1,11 @@
 package com.BBC.Services;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.BBC.Dao.CustomerBillDao;
@@ -17,19 +20,24 @@ public class CustomerBillServices {
 	@Autowired
 	CustomerBillDao customerBillDao;
 
-	private Date date = new Date();
+	private Date todaysDate = new Date();
+
+	private static final Logger logger = LoggerFactory.getLogger(CustomerBillServices.class);
 
 	public List<CustomerBill> getAlltranction() {
+		logger.info("All customer tranctions");
 		return customerBillDao.getAlltranction();
 	}
 
 	public List<CustomerBill> getAlltranctionByIdForPending(long id) {
 		try {
+			logger.info("In main function");
 			List<CustomerBill> list = customerBillDao.getAllTransaction();
 			List<CustomerBill> newList = new ArrayList<>();
 			for (CustomerBill tranction : list) {
 				Customer customer = tranction.getCustomer();
 				if (customer.getCustomerId() == id && tranction.getStatus().equals("pending")) {
+					logger.info(" customer pending status tranctions");
 					newList.add(tranction);
 				}
 			}
@@ -40,47 +48,49 @@ public class CustomerBillServices {
 
 			return newList;
 		} catch (TransactionsNotFoundException e) {
-
-			System.out.println("Error: " + e.getMessage());
+			logger.error("No pending transactions found for customer");
+			logger.info("Error: " + e.getMessage());
 			return null;
 		} catch (Exception e) {
-			System.out.println("An unexpected error occurred: " + e.getMessage());
+			logger.error("An unexpected error occurred: " + e.getMessage());
 			return null;
 		}
 	}
 
 	public String setAlltranctionByIdAndPaymentId(long id, long tId, long pId) {
 		try {
+			
 			if (pId == 0) {
+				logger.info("Not a valid Id. Please check payment mode id");
 				throw new InvalidIdException("Not a valid Id. Please check id");
-			} else if (pId > 3) {
-				throw new InvalidIdException("Payment ID is greater than 3. Invalid payment mode.");
-			} else {
 
+			} else if (pId > 3) {
+				logger.info("Not a valid Id. Please check payment mode id");
+				throw new InvalidIdException("Payment ID is greater than 3. Invalid payment mode.");
+
+			} else {
+				logger.info("In main function");
 				List<CustomerBill> list = customerBillDao.getAllTransaction();
 				for (CustomerBill tranction : list) {
 					Customer customer = tranction.getCustomer();
 					PaymentModes paymentMode = tranction.getPaymentMode();
-//					if (pId == 2) {
-//						paymentMode.setDiscountPercentage(5);
-//					}
 					if (customer.getCustomerId() == id && tranction.getStatus().equals("pending")
 							&& tranction.getBillId() == tId) {
+						logger.info("transaction mode choosen");
 						paymentMode.setPaymentModeId(pId);
+						logger.info("" + paymentMode.getDiscountPercentage());
 
-						System.out.println(paymentMode.getDiscountPercentage());
+						tranction.setTotalAmount(tranction.getAmount()
+								- ((tranction.getAmount() * paymentMode.getDiscountPercentage()) / 100));
 
-						tranction.setTotalAmount(
-								tranction.getAmount() - ((tranction.getAmount() * paymentMode.getDiscountPercentage()) / 100));
+						logger.info("" + tranction.getTotalAmount());
 
-						System.out.println(tranction.getTotalAmount());
-
-						if ((date.before(tranction.getEndDate()) && date.after(tranction.getStartDate()))
-								|| (date.equals(tranction.getEndDate()))) {
+						if ((todaysDate.before(tranction.getEndDate()) && todaysDate.after(tranction.getStartDate()))
+								|| (todaysDate.equals(tranction.getEndDate()))) {
 
 							tranction.setTotalAmount(tranction.getTotalAmount()
 									- ((tranction.getTotalAmount() * paymentMode.getDateDiscount()) / 100));
-							System.out.println(tranction.getTotalAmount());
+							logger.info("" + tranction.getTotalAmount());
 						}
 						return customerBillDao.setAllTransactionUpdate(tranction);
 					}
@@ -88,6 +98,7 @@ public class CustomerBillServices {
 
 			}
 		} catch (Exception e) {
+			logger.error("Not a valid entry");
 			return "Error: " + e.getMessage();
 		}
 
@@ -96,12 +107,16 @@ public class CustomerBillServices {
 	}
 
 	public List<CustomerBill> getAlltranctionBillInvoice(long id, long tId) {
+
 		try {
+			logger.info("In main function");
 			List<CustomerBill> list = customerBillDao.getAllTransaction();
 			List<CustomerBill> newList = new ArrayList<>();
 			for (CustomerBill tranction : list) {
 				Customer customer = tranction.getCustomer();
-				if (customer.getCustomerId() == id && tranction.getBillId() == tId && tranction.getStatus().equals("pending")) {
+				if (customer.getCustomerId() == id && tranction.getBillId() == tId
+						&& tranction.getStatus().equals("pending")) {
+					logger.info("Invoice generated");
 					newList.add(tranction);
 				}
 			}
@@ -113,7 +128,8 @@ public class CustomerBillServices {
 
 			return newList;
 		} catch (Exception e) {
-			System.out.println("An unexpected error occurred: " + e.getMessage());
+			logger.error("No transactions found for customer " + id + " and transaction ID " + tId);
+			logger.info("An unexpected error occurred: " + e.getMessage());
 			return null;
 		}
 	}
@@ -121,10 +137,13 @@ public class CustomerBillServices {
 	public String getAlltranctionPaymentUpdate(long id, long tId) {
 
 		try {
+			logger.info("In main function");
 			List<CustomerBill> list = customerBillDao.getAllTransaction();
 			for (CustomerBill tranction : list) {
 				Customer customer = tranction.getCustomer();
-				if (customer.getCustomerId() == id && tranction.getBillId() == tId && tranction.getStatus().equals("pending")) {
+				if (customer.getCustomerId() == id && tranction.getBillId() == tId
+						&& tranction.getStatus().equals("pending")) {
+					logger.info("transaction update");
 					tranction.setStatus("success");
 					return customerBillDao.getAlltranctionPaymentUpdate(tranction);
 				}
@@ -132,10 +151,12 @@ public class CustomerBillServices {
 			throw new TransactionsNotFoundException(
 					"No pending payment found for customer " + id + " and transaction ID " + tId);
 		} catch (TransactionsNotFoundException e) {
-			System.out.println("Error: " + e.getMessage());
+			logger.error("No pending payment found for customer " + id + " and transaction ID " + tId);
+			logger.info("Error: " + e.getMessage());
 			return "Payment update failed: " + e.getMessage();
 		} catch (Exception e) {
-			System.out.println("An unexpected error occurred: " + e.getMessage());
+			logger.error("An unexpected error occurred: ");
+			logger.info("An unexpected error occurred: " + e.getMessage());
 			return "An unexpected error occurred while updating payment";
 		}
 
@@ -143,26 +164,28 @@ public class CustomerBillServices {
 
 	public List<CustomerBill> getAlltranctionByIdForSucess(long id) {
 		try {
+			logger.info("In main function");
 			List<CustomerBill> list = customerBillDao.getAllTransaction();
 			List<CustomerBill> newList = new ArrayList<>();
 			for (CustomerBill tranction : list) {
 				Customer customer = tranction.getCustomer();
 				if (customer.getCustomerId() == id && tranction.getStatus().equals("success")) {
+					logger.info("success transaction");
 					newList.add(tranction);
 				}
 			}
-
 			if (newList.isEmpty()) {
 				throw new TransactionsNotFoundException("No successful transactions found for customer " + id);
 			}
 
 			return newList;
 		} catch (TransactionsNotFoundException e) {
-
-			System.out.println("Error: " + e.getMessage());
+			logger.error("No successful transactions found for customer  " + id);
+			logger.info("Error: " + e.getMessage());
 			return null;
 		} catch (Exception e) {
-			System.out.println("An unexpected error occurred: " + e.getMessage());
+			logger.error("An unexpected error occurred: ");
+			logger.info("An unexpected error occurred: " + e.getMessage());
 			return null;
 		}
 	}

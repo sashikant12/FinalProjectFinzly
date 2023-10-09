@@ -32,7 +32,7 @@ public class CustomerBillDao {
 		Criteria criteria = session.createCriteria(CustomerBill.class);
 		session.update(tranction);
 		session.beginTransaction().commit();
-		return "Transaction Done";
+		return "Transaction mode selected successfully";
 	}
 
 	public String getAlltranctionPaymentUpdate(CustomerBill tranction) {

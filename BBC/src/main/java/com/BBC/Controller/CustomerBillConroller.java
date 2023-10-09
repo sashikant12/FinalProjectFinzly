@@ -23,7 +23,7 @@ public class CustomerBillConroller {
 	}
 
 //	@GetMapping("getAlltranctionByIdForPending/{id}")
-	@GetMapping("pending/{id}")
+	@GetMapping("/pending/{id}")
 	public List<CustomerBill> getAlltranctionByIdForPending(@PathVariable long id) {
 		return customerBillServices.getAlltranctionByIdForPending(id);
 	}

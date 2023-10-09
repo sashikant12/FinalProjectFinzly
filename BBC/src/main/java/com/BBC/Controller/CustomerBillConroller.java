@@ -16,7 +16,7 @@ import com.BBC.Services.CustomerBillServices;
 public class CustomerBillConroller {
 	@Autowired
 	CustomerBillServices customerBillServices;
-
+//  checking the api connection
 	@GetMapping("tranctions")
 	public List<CustomerBill> getAlltranction() {
 		return customerBillServices.getAlltranction();
@@ -25,7 +25,7 @@ public class CustomerBillConroller {
 //	@GetMapping("getAlltranctionByIdForPending/{id}")
 	@GetMapping("/pending/{id}")
 	public List<CustomerBill> getAlltranctionByIdForPending(@PathVariable long id) {
-		System.out.println("testtt");
+		
 		return customerBillServices.getAlltranctionByIdForPending(id);
 	}
 

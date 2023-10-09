@@ -31,7 +31,7 @@ public class CustomerBillServices {
 
 	public List<CustomerBill> getAlltranctionByIdForPending(long id) {
 		try {
-			logger.info("In main function");
+			logger.info("In main pending function");
 			List<CustomerBill> list = customerBillDao.getAllTransaction();
 			List<CustomerBill> newList = new ArrayList<>();
 			for (CustomerBill tranction : list) {
@@ -69,7 +69,7 @@ public class CustomerBillServices {
 				throw new InvalidIdException("Payment ID is greater than 3. Invalid payment mode.");
 
 			} else {
-				logger.info("In main function");
+				logger.info("In choose payment mode  function");
 				List<CustomerBill> list = customerBillDao.getAllTransaction();
 				for (CustomerBill tranction : list) {
 					Customer customer = tranction.getCustomer();
@@ -109,7 +109,7 @@ public class CustomerBillServices {
 	public List<CustomerBill> getAlltranctionBillInvoice(long id, long tId) {
 
 		try {
-			logger.info("In main function");
+			logger.info("In invoice function");
 			List<CustomerBill> list = customerBillDao.getAllTransaction();
 			List<CustomerBill> newList = new ArrayList<>();
 			for (CustomerBill tranction : list) {
@@ -137,7 +137,7 @@ public class CustomerBillServices {
 	public String getAlltranctionPaymentUpdate(long id, long tId) {
 
 		try {
-			logger.info("In main function");
+			logger.info("In update function");
 			List<CustomerBill> list = customerBillDao.getAllTransaction();
 			for (CustomerBill tranction : list) {
 				Customer customer = tranction.getCustomer();
@@ -164,7 +164,7 @@ public class CustomerBillServices {
 
 	public List<CustomerBill> getAlltranctionByIdForSucess(long id) {
 		try {
-			logger.info("In main function");
+			logger.info("In success function");
 			List<CustomerBill> list = customerBillDao.getAllTransaction();
 			List<CustomerBill> newList = new ArrayList<>();
 			for (CustomerBill tranction : list) {

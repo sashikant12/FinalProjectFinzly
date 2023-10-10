@@ -19,9 +19,9 @@ import com.BBC.Exception.TransactionsNotFoundException;
 public class CustomerBillServices {
 	@Autowired
 	CustomerBillDao customerBillDao;
-
-	private Date todaysDate = new Date();
-
+//	current date
+	private static final  Date todaysDate = new Date();
+//	Logger
 	private static final Logger logger = LoggerFactory.getLogger(CustomerBillServices.class);
 
 	public List<CustomerBill> getAlltranction() {
@@ -32,7 +32,7 @@ public class CustomerBillServices {
 	public List<CustomerBill> getAlltranctionByIdForPending(long id) {
 		try {
 			logger.info("In main pending function");
-			List<CustomerBill> list = customerBillDao.getAllTransaction();
+			List<CustomerBill> list = customerBillDao.getAlltranstionByIdForPending(id);
 			List<CustomerBill> newList = new ArrayList<>();
 			for (CustomerBill tranction : list) {
 				Customer customer = tranction.getCustomer();
@@ -70,7 +70,7 @@ public class CustomerBillServices {
 
 			} else {
 				logger.info("In choose payment mode  function");
-				List<CustomerBill> list = customerBillDao.getAllTransaction();
+				List<CustomerBill> list = customerBillDao.getAlltranstionByIdForPending(id);
 				for (CustomerBill tranction : list) {
 					Customer customer = tranction.getCustomer();
 					PaymentModes paymentMode = tranction.getPaymentMode();
@@ -110,7 +110,7 @@ public class CustomerBillServices {
 
 		try {
 			logger.info("In invoice function");
-			List<CustomerBill> list = customerBillDao.getAllTransaction();
+			List<CustomerBill> list = customerBillDao.getAlltranction();
 			List<CustomerBill> newList = new ArrayList<>();
 			for (CustomerBill tranction : list) {
 				Customer customer = tranction.getCustomer();
@@ -138,7 +138,7 @@ public class CustomerBillServices {
 
 		try {
 			logger.info("In update function");
-			List<CustomerBill> list = customerBillDao.getAllTransaction();
+			List<CustomerBill> list = customerBillDao.getAlltranction();
 			for (CustomerBill tranction : list) {
 				Customer customer = tranction.getCustomer();
 				if (customer.getCustomerId() == id && tranction.getBillId() == tId
@@ -165,7 +165,7 @@ public class CustomerBillServices {
 	public List<CustomerBill> getAlltranctionByIdForSucess(long id) {
 		try {
 			logger.info("In success function");
-			List<CustomerBill> list = customerBillDao.getAllTransaction();
+			List<CustomerBill> list = customerBillDao.getAlltranstionByIdForPending(id);
 			List<CustomerBill> newList = new ArrayList<>();
 			for (CustomerBill tranction : list) {
 				Customer customer = tranction.getCustomer();
@@ -185,6 +185,35 @@ public class CustomerBillServices {
 			return null;
 		} catch (Exception e) {
 			logger.error("An unexpected error occurred: ");
+			logger.info("An unexpected error occurred: " + e.getMessage());
+			return null;
+		}
+	}
+	
+	
+	public List<CustomerBill> getAllSuccessBill(long id, long tId) {
+
+		try {
+			logger.info("In success paid bill function");
+			List<CustomerBill> list = customerBillDao.getAlltranction();
+			List<CustomerBill> newList = new ArrayList<>();
+			for (CustomerBill tranction : list) {
+				Customer customer = tranction.getCustomer();
+				if (customer.getCustomerId() == id && tranction.getBillId() == tId
+						&& tranction.getStatus().equals("success")) {
+					logger.info("completed");
+					newList.add(tranction);
+				}
+			}
+
+			if (newList.isEmpty()) {
+				throw new TransactionsNotFoundException(
+						"No transactions found for customer " + id + " and transaction ID " + tId);
+			}
+
+			return newList;
+		} catch (Exception e) {
+			logger.error("No transactions found for customer " + id + " and transaction ID " + tId);
 			logger.info("An unexpected error occurred: " + e.getMessage());
 			return null;
 		}

@@ -13,12 +13,14 @@ import com.BBC.Entiity.CustomerBill;
 
 @Repository
 public class CustomerDao {
-@Autowired
-SessionFactory sessionFactory;
+	@Autowired
+	SessionFactory sessionFactory;
 
-public List<Customer> checkUserId(long id) {
-	Session session = sessionFactory.openSession();
-	Criteria criteria = session.createCriteria(Customer.class);
-	return criteria.list();
-}
+	public List<Customer> checkUserId(long id) {
+		try (Session session = sessionFactory.openSession()) {
+			Criteria criteria = session.createCriteria(Customer.class);
+			criteria.add(Restrictions.eq("customerId", id));
+			return criteria.list();
+		}
+	}
 }

@@ -21,11 +21,15 @@ public class CustomerBillDao {
 		
 	}
 
-	public java.util.List<CustomerBill> getAllTransaction() {
-		Session session = sessionFactory.openSession();
-		Criteria criteria = session.createCriteria(CustomerBill.class);
+	public java.util.List<CustomerBill> getAlltranstionByIdForPending(long id) {
+		try (Session session = sessionFactory.openSession()) {
+		// Session session = sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(Customer.class);
+		criteria.add(Restrictions.eq("customerId",id));
 		return criteria.list();
-	}
+		}
+		}
+		}
 	
 	public String setAllTransactionUpdate(CustomerBill tranction) {
 		Session session = sessionFactory.openSession();

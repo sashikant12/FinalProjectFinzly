@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.BBC.Entiity.CustomerBill;
 import com.BBC.Services.CustomerBillServices;
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class CustomerBillConroller {
 	@Autowired
@@ -52,5 +52,14 @@ public class CustomerBillConroller {
 	@GetMapping("success/{id}")
 	public List<CustomerBill> getAlltranctionByIdForSucess(@PathVariable long id) {
 		return customerBillServices.getAlltranctionByIdForSucess(id);
+	}
+//	successfull
+	@GetMapping("successfull/{id}/{tId}")
+	public List<CustomerBill> getAllSuccessBill(@PathVariable long id, @PathVariable long tId) {
+		return customerBillServices.getAllSuccessBill(id, tId);
+	}
+	@GetMapping("gogo")
+	public String me() {
+		return "its working";
 	}
 }

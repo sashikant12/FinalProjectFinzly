@@ -21,6 +21,7 @@ public class CustomerBill {
 	private int month;
 	private Date startDate;
 	private Date endDate;
+	private Date dueDate;
 	@OneToOne
 	private Customer customer;
 	@OneToOne
@@ -85,6 +86,11 @@ public class CustomerBill {
 	public void setPaymentMode(PaymentModes paymentMode) {
 		this.paymentMode = paymentMode;
 	}
-	
+	public Date getDueDate() {
+		return endDate;
+	}
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
+	}
 	
 }

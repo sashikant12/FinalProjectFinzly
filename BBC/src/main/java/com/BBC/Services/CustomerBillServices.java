@@ -19,26 +19,26 @@ import com.BBC.Exception.TransactionsNotFoundException;
 public class CustomerBillServices {
 	@Autowired
 	CustomerBillDao customerBillDao;
-//	current date
-	private static final  Date todaysDate = new Date();
-//	Logger
+
+	private Date todaysDate = new Date();
+
 	private static final Logger logger = LoggerFactory.getLogger(CustomerBillServices.class);
 
-	public List<CustomerBill> getAlltranction() {
+	public List<CustomerBill> getAlltransaction() {
 		logger.info("All customer tranctions");
-		return customerBillDao.getAlltranction();
+		return customerBillDao.getAllTransaction();
 	}
 
-	public List<CustomerBill> getAlltranctionByIdForPending(long id) {
+	public List<CustomerBill> getPendingBills(long id) {
 		try {
-			logger.info("In main pending function");
-			List<CustomerBill> list = customerBillDao.getAlltranstionByIdForPending(id);
+			logger.info("In main Pending function");
+			List<CustomerBill> list = customerBillDao.getAllTransaction();
 			List<CustomerBill> newList = new ArrayList<>();
-			for (CustomerBill tranction : list) {
-				Customer customer = tranction.getCustomer();
-				if (customer.getCustomerId() == id && tranction.getStatus().equals("pending")) {
+			for (CustomerBill transaction : list) {
+				Customer customer = transaction.getCustomer();
+				if (customer.getCustomerId() == id && transaction.getStatus().equals("pending")) {
 					logger.info(" customer pending status tranctions");
-					newList.add(tranction);
+					newList.add(transaction);
 				}
 			}
 
@@ -57,42 +57,43 @@ public class CustomerBillServices {
 		}
 	}
 
-	public String setAlltranctionByIdAndPaymentId(long id, long tId, long pId) {
+	public String setPaymentMode(long id, long tId, long pId) {
 		try {
-			
+
 			if (pId == 0) {
-				logger.info("Not a valid Id. Please check payment mode id");
+				logger.error("Not a valid Id. Please check payment mode id");
 				throw new InvalidIdException("Not a valid Id. Please check id");
 
 			} else if (pId > 3) {
-				logger.info("Not a valid Id. Please check payment mode id");
+				logger.error("Not a valid Id. Please check payment mode id");
 				throw new InvalidIdException("Payment ID is greater than 3. Invalid payment mode.");
 
 			} else {
-				logger.info("In choose payment mode  function");
-				List<CustomerBill> list = customerBillDao.getAlltranstionByIdForPending(id);
-				for (CustomerBill tranction : list) {
-					Customer customer = tranction.getCustomer();
-					PaymentModes paymentMode = tranction.getPaymentMode();
-					if (customer.getCustomerId() == id && tranction.getStatus().equals("pending")
-							&& tranction.getBillId() == tId) {
+				logger.info("In main choose Payment mode function");
+				List<CustomerBill> list = customerBillDao.getAllTransaction();
+				for (CustomerBill transaction : list) {
+					Customer customer = transaction.getCustomer();
+					PaymentModes paymentMode = transaction.getPaymentMode();
+					if (customer.getCustomerId() == id && transaction.getStatus().equals("pending")
+							&& transaction.getBillId() == tId) {
 						logger.info("transaction mode choosen");
 						paymentMode.setPaymentModeId(pId);
 						logger.info("" + paymentMode.getDiscountPercentage());
 
-						tranction.setTotalAmount(tranction.getAmount()
-								- ((tranction.getAmount() * paymentMode.getDiscountPercentage()) / 100));
+						transaction.setTotalAmount(transaction.getAmount()
+								- ((transaction.getAmount() * paymentMode.getDiscountPercentage()) / 100));
 
-						logger.info("" + tranction.getTotalAmount());
+						logger.info("" + transaction.getTotalAmount());
 
-						if ((todaysDate.before(tranction.getEndDate()) && todaysDate.after(tranction.getStartDate()))
-								|| (todaysDate.equals(tranction.getEndDate()))) {
-
-							tranction.setTotalAmount(tranction.getTotalAmount()
-									- ((tranction.getTotalAmount() * paymentMode.getDateDiscount()) / 100));
-							logger.info("" + tranction.getTotalAmount());
+						if ((todaysDate.before(transaction.getEndDate())
+								&& todaysDate.after(transaction.getStartDate()))
+								|| (todaysDate.equals(transaction.getEndDate()))) {
+							transaction.setDateDiscount(5);
+							transaction.setTotalAmount(transaction.getTotalAmount()
+									- ((transaction.getTotalAmount() * transaction.getDateDiscount()) / 100));
+							logger.info("" + transaction.getTotalAmount());
 						}
-						return customerBillDao.setAllTransactionUpdate(tranction);
+						return customerBillDao.setPaymentMode(transaction);
 					}
 				}
 
@@ -106,18 +107,34 @@ public class CustomerBillServices {
 
 	}
 
-	public List<CustomerBill> getAlltranctionBillInvoice(long id, long tId) {
+	public List<CustomerBill> getInvoice(long id, long tId) {
 
 		try {
-			logger.info("In invoice function");
-			List<CustomerBill> list = customerBillDao.getAlltranction();
+			logger.info("In main invoice function");
+			List<CustomerBill> list = customerBillDao.getAllTransaction();
 			List<CustomerBill> newList = new ArrayList<>();
-			for (CustomerBill tranction : list) {
-				Customer customer = tranction.getCustomer();
-				if (customer.getCustomerId() == id && tranction.getBillId() == tId
-						&& tranction.getStatus().equals("pending")) {
+			for (CustomerBill trasanction : list) {
+				Customer customer = trasanction.getCustomer();
+				PaymentModes paymentMode = trasanction.getPaymentMode();
+				if (customer.getCustomerId() == id && trasanction.getBillId() == tId
+						&& trasanction.getStatus().equals("pending")) {
+					logger.info("Discount on Online Section");
+					trasanction.setTotalAmount(trasanction.getAmount()
+							- ((trasanction.getAmount() * paymentMode.getDiscountPercentage()) / 100));
+
+					if ((todaysDate.before(trasanction.getEndDate()) && todaysDate.after(trasanction.getStartDate()))
+							|| (todaysDate.equals(trasanction.getEndDate()))) {
+						logger.info(
+								"Date discount on according to the current date and lie b/w start and end date Section");
+						trasanction.setDateDiscount(5);
+						trasanction.setTotalAmount(trasanction.getTotalAmount()
+								- ((trasanction.getTotalAmount() * trasanction.getDateDiscount()) / 100));
+
+					}
+
+					customerBillDao.setPaymentMode(trasanction);
+					newList.add(trasanction);
 					logger.info("Invoice generated");
-					newList.add(tranction);
 				}
 			}
 
@@ -134,18 +151,18 @@ public class CustomerBillServices {
 		}
 	}
 
-	public String getAlltranctionPaymentUpdate(long id, long tId) {
+	public String getPaymentUpdate(long id, long tId) {
 
 		try {
-			logger.info("In update function");
-			List<CustomerBill> list = customerBillDao.getAlltranction();
-			for (CustomerBill tranction : list) {
-				Customer customer = tranction.getCustomer();
-				if (customer.getCustomerId() == id && tranction.getBillId() == tId
-						&& tranction.getStatus().equals("pending")) {
+			logger.info("In main Update function");
+			List<CustomerBill> list = customerBillDao.getAllTransaction();
+			for (CustomerBill transaction : list) {
+				Customer customer = transaction.getCustomer();
+				if (customer.getCustomerId() == id && transaction.getBillId() == tId
+						&& transaction.getStatus().equals("pending")) {
+					transaction.setStatus("success");
 					logger.info("transaction update");
-					tranction.setStatus("success");
-					return customerBillDao.getAlltranctionPaymentUpdate(tranction);
+					return customerBillDao.getPaymentUpdate(transaction);
 				}
 			}
 			throw new TransactionsNotFoundException(
@@ -162,16 +179,16 @@ public class CustomerBillServices {
 
 	}
 
-	public List<CustomerBill> getAlltranctionByIdForSucess(long id) {
+	public List<CustomerBill> getPaidBills(long id) {
 		try {
-			logger.info("In success function");
-			List<CustomerBill> list = customerBillDao.getAlltranstionByIdForPending(id);
+			logger.info("In main Success function");
+			List<CustomerBill> list = customerBillDao.getAllTransaction();
 			List<CustomerBill> newList = new ArrayList<>();
-			for (CustomerBill tranction : list) {
-				Customer customer = tranction.getCustomer();
-				if (customer.getCustomerId() == id && tranction.getStatus().equals("success")) {
+			for (CustomerBill transaction : list) {
+				Customer customer = transaction.getCustomer();
+				if (customer.getCustomerId() == id && transaction.getStatus().equals("success")) {
 					logger.info("success transaction");
-					newList.add(tranction);
+					newList.add(transaction);
 				}
 			}
 			if (newList.isEmpty()) {
@@ -189,20 +206,18 @@ public class CustomerBillServices {
 			return null;
 		}
 	}
-	
-	
-	public List<CustomerBill> getAllSuccessBill(long id, long tId) {
 
+	public List<CustomerBill> getPaidBillId(long id, long tId) {
 		try {
-			logger.info("In success paid bill function");
-			List<CustomerBill> list = customerBillDao.getAlltranction();
+			logger.info("In main successfull function");
+			List<CustomerBill> list = customerBillDao.getAllTransaction();
 			List<CustomerBill> newList = new ArrayList<>();
-			for (CustomerBill tranction : list) {
-				Customer customer = tranction.getCustomer();
-				if (customer.getCustomerId() == id && tranction.getBillId() == tId
-						&& tranction.getStatus().equals("success")) {
-					logger.info("completed");
-					newList.add(tranction);
+			for (CustomerBill transaction : list) {
+				Customer customer = transaction.getCustomer();
+				if (customer.getCustomerId() == id && transaction.getBillId() == tId
+						&& transaction.getStatus().equals("success")) {
+					logger.info("success");
+					newList.add(transaction);
 				}
 			}
 
